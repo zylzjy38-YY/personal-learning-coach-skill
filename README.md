@@ -48,6 +48,18 @@ C:\Users\<用户名>\.codex\skills\personal-learning-coach
 
 把完整的 `personal-learning-coach` 文件夹放入该平台声明的 Skills 目录。不同平台的目录和显式调用语法可能不同，但核心 `SKILL.md` 与 `references/` 不依赖特定工具。
 
+## 发布到自己的 GitHub
+
+1. 在 GitHub 新建一个空仓库，例如 `personal-learning-coach-skill`，不要让网页预先生成 README 或 License。
+2. 在本仓库目录执行：
+
+```bash
+git remote add origin https://github.com/<你的用户名>/personal-learning-coach-skill.git
+git push -u origin main
+```
+
+以后修改后使用正常的 `git add`、`git commit`、`git push` 更新。安装到其他平台前先阅读目标平台的 Skills 目录约定；私有仓库还需要该平台具有相应的 GitHub 读取权限。
+
 ## 使用示例
 
 ```text
