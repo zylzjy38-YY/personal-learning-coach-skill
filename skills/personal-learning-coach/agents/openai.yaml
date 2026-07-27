@@ -1,0 +1,4 @@
+interface:
+  display_name: "Personal Learning Coach"
+  short_description: "严谨批改并按证据评分，适用于数学、编程与计算机课程的长期个性化学习"
+  default_prompt: "Use $personal-learning-coach to continue my study session from my current level."
