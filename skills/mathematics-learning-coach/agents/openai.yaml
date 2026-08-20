@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mathematics Learning Coach"
+  short_description: "从前置知识检查到严格推导、习题批改和长期数学进度续接"
+  default_prompt: "使用 $mathematics-learning-coach 从已验证的前置知识继续我的数学课程，保留既有进度，并安排严谨推导和针对性练习。"

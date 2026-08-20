@@ -1,98 +1,95 @@
-# Personal Learning Coach Skill
+# Learning Coach Skills
 
-一个可移植的个人学习教练 Skill，源自长期重积分学习中形成的教学约定，并扩展到高等数学、离散数学、计算机专业课、C、Python 和 Java。
+三个面向长期系统学习的中文 Agent Skills，分别覆盖数学、编程语言和计算机专业课。它们强调严格判断、循序推进、真实验证和可续接的学习记录，不以学习时长或主观自评代替掌握证据。
 
-它不替模型增加新的学科知识，也不会训练或微调模型。它提供的是一套可重复执行的教学协议：先读取学习上下文，按五阶段能力路线规划，尊重学习者的真实方法，定位第一处错误，沿原思路修正，按证据评分，必要时比较第二种方法，然后自动推进下一题。
+## 包含的 Skills
 
-## 五阶段路线
+| Skill | 适用范围 | 显式调用 |
+| --- | --- | --- |
+| Mathematics Learning Coach | 高等数学、线性代数、概率统计、离散数学 | `$mathematics-learning-coach` |
+| Programming Language Learning Coach | C、Python、C++、Java、Rust、C#、JavaScript | `$programming-language-learning-coach` |
+| Computer Science Learning Coach | 数据结构、计算机组成原理、操作系统、计算机网络、数据库、408 综合复习 | `$computer-science-learning-coach` |
 
-1. 概念入门：掌握课本基础概念、符号、条件和基本操作。
-2. 标准熟练：熟练使用基础方法并稳定完成典型题。
-3. 深化迁移：理解方法结构，掌握技巧并处理非标准变式。
-4. 高阶综合：在限时条件下完成高水平大学期末和综合难题。
-5. 竞赛或专业级：通过真题结构、多次限时模拟和迁移表现证明能力。
+三个 Skill 各自维护课程阶段、练习协议、阶段测试和进度记录，边界清晰：
 
-每阶段结束前会生成覆盖所有核心模块的代表性晋级测试。总分达标但存在核心模块缺口时仍不晋级；补弱后使用不同题目复测。第五阶段不能用一次小测判定。
-
-## 工作原理
-
-兼容 Agent Skills 的平台通常分三层加载：
-
-1. 平台始终索引 `SKILL.md` 顶部的 `name` 和 `description`。
-2. 当用户请求与描述匹配，或显式调用 `$personal-learning-coach` 时，平台把 `SKILL.md` 正文加入当前模型上下文。
-3. Skill 正文再按任务选择性读取 `references/`，例如数学题只加载数学规则。
-
-因此 Skill 更接近“按需加载的操作手册”，不是插件代码，也不是新的 AI 模型。实际触发方式、工具权限和指令优先级由所在平台决定；它不能覆盖平台安全规则或系统级指令。
+- 数学 Skill 处理定义、推导、证明、计算和数学考试复习。
+- 编程语言 Skill 处理语法、运行机制、代码批改、调试和工程实践。
+- 计算机专业课 Skill 处理数据结构与计算机系统课程，并提供自然的网络安全迁移路线。
 
 ## 仓库结构
 
 ```text
-skills/personal-learning-coach/
-|-- SKILL.md
-|-- agents/openai.yaml
-`-- references/
-    |-- mathematics.md
-    |-- programming-and-cs.md
-    |-- staged-learning.md
-    `-- progress-record.md
+skills/
+|-- mathematics-learning-coach/
+|   |-- SKILL.md
+|   |-- agents/openai.yaml
+|   `-- references/
+|-- programming-language-learning-coach/
+|   |-- SKILL.md
+|   |-- agents/openai.yaml
+|   `-- references/
+`-- computer-science-learning-coach/
+    |-- SKILL.md
+    |-- agents/openai.yaml
+    `-- references/
 ```
 
-## 安装
+每个目录都是独立 Skill。`SKILL.md` 包含名称、触发范围和核心指令，`references/` 保存按需读取的详细教学协议，`agents/openai.yaml` 提供界面元数据。
 
-### OpenAI Codex
+## 安装到 Codex
 
-把 `skills/personal-learning-coach` 目录复制到：
+Codex 当前会从用户级 `$HOME/.agents/skills` 和仓库级 `.agents/skills` 等位置发现本地 Skill。选择一种方式安装即可。
+
+### 用户级安装
+
+克隆仓库后，把 `skills` 下的三个完整目录复制到：
 
 ```text
-~/.codex/skills/personal-learning-coach
+$HOME/.agents/skills/
 ```
 
-Windows 默认对应：
+Windows PowerShell 示例：
+
+```powershell
+git clone https://github.com/zylzjy38-YY/personal-learning-coach-skill.git
+New-Item -ItemType Directory -Force "$HOME/.agents/skills" | Out-Null
+Copy-Item -Recurse -Force "personal-learning-coach-skill/skills/*" "$HOME/.agents/skills/"
+```
+
+### 仓库级安装
+
+如只希望某个项目使用这些 Skill，把所需目录复制到项目的：
 
 ```text
-C:\Users\<用户名>\.codex\skills\personal-learning-coach
+.agents/skills/
 ```
 
-重新开始下一轮对话后，Codex 会重新发现该 Skill。
-
-### 其他 Agent Skills 平台
-
-把完整的 `personal-learning-coach` 文件夹放入该平台声明的 Skills 目录。不同平台的目录和显式调用语法可能不同，但核心 `SKILL.md` 与 `references/` 不依赖特定工具。
-
-## 发布到自己的 GitHub
-
-1. 在 GitHub 新建一个空仓库，例如 `personal-learning-coach-skill`，不要让网页预先生成 README 或 License。
-2. 在本仓库目录执行：
-
-```bash
-git remote add origin https://github.com/<你的用户名>/personal-learning-coach-skill.git
-git push -u origin main
-```
-
-以后修改后使用正常的 `git add`、`git commit`、`git push` 更新。安装到其他平台前先阅读目标平台的 Skills 目录约定；私有仓库还需要该平台具有相应的 GitHub 读取权限。
+Codex 通常会自动检测 Skill 变化；如果没有出现，重启 Codex。
 
 ## 使用示例
 
 ```text
-使用 $personal-learning-coach，继续我的重积分学习。先根据进度判断下一题，不要直接给提示。
+使用 $mathematics-learning-coach，先诊断我的高等数学水平，再继续当前课程。
 ```
 
 ```text
-请按 $personal-learning-coach 批改这张手写答案。先复述我的方法，再指出第一处错误。
+使用 $programming-language-learning-coach，带我从零系统学习 C 语言。
 ```
 
 ```text
-用 $personal-learning-coach 带我学习 Java 集合。一次一题，代码必须实际编译验证。
+使用 $computer-science-learning-coach，为我建立数据结构与 408 的学习路线。
 ```
 
-```text
-使用 $personal-learning-coach，为重积分建立五阶段路线，并先诊断我当前处于哪一阶段。
-```
+Skill 也可以在请求与其 `description` 匹配时被隐式调用。显式调用更适合第一次使用或需要明确指定教学教练的场景。
 
-## 跨会话进度
+## 进度与数据
 
-Skill 本身不会自动拥有长期记忆。平台允许读写文件时，它使用当前学习项目下的 `.learning/personal-learning-progress.md` 保存进度；无文件权限的平台只能依赖当前对话或由用户重新提供进度摘要。
+这些 Skill 只包含教学协议和空白进度模板，不包含个人学习记录。实际进度由使用者在自己的学习项目中保存，不应提交到本仓库。
+
+## 兼容性说明
+
+本仓库提供可直接阅读和复制的 Skill 源码。GitHub 公开仓库不等于已发布到 OpenAI 插件目录；如果要让其他用户通过插件目录一键安装，还需要按插件规范另行打包和发布。
 
 ## 许可证
 
-MIT License。可以在个人项目和支持 Agent Skills 的平台中复制、修改和再发布。
+[MIT License](LICENSE)

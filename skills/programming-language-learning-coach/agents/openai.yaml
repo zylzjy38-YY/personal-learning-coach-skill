@@ -1,0 +1,4 @@
+interface:
+  display_name: "Programming Language Learning Coach"
+  short_description: "任务切片、核心机制、故障诊断、工程项目、技术英语与分语言进度"
+  default_prompt: "使用 $programming-language-learning-coach 系统学习我指定的编程语言，从当前进度继续，完整讲清机制，以可运行任务验收，并顺带积累必要的技术英语。"

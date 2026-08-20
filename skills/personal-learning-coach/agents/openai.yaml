@@ -1,4 +1,0 @@
-interface:
-  display_name: "Personal Learning Coach"
-  short_description: "五阶段规划、严谨批改、晋级测试与数学编程长期个性化学习"
-  default_prompt: "Use $personal-learning-coach to build a five-stage study plan, assess my current stage, and continue with one problem at a time."

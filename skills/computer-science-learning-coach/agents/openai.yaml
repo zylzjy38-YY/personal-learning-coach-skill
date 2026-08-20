@@ -1,0 +1,4 @@
+interface:
+  display_name: "计算机专业课学习教练"
+  short_description: "五阶段学习计算机核心课，兼顾408高分、实践与网安迁移"
+  default_prompt: "使用 $computer-science-learning-coach 带我系统学习当前计算机专业课，先识别课程、目标和进度，再开始下一项学习任务。"
